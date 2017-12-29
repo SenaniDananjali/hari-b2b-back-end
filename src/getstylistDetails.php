@@ -8,7 +8,7 @@
     $servername = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "test";
+    $dbname = "hairb2b";
 
     // Create connection
     $conn = new mysqli($servername, $username, $password, $dbname);
@@ -23,6 +23,7 @@
     $result = $conn->query($details);
     header('Content-Type: application/json', true, 200);
     header('Access-Control-Allow-Origin: *',true,200);
+    header('charset: utf-8',true,200);
     $rst = array();
 
     if ($result->num_rows > 0) {
@@ -35,9 +36,9 @@
             $myObj->description = $row["description"];
 
             array_push($rst, $myObj);
-
+            // echo json_encode($myObj);
         }
-
+        // echo  implode(" ",$rst);
         $myJSON = json_encode($rst);
 
         echo $myJSON;
