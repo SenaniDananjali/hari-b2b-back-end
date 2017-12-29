@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         $myObj = new stdClass();
         $myObj->id =  $row["sty"];
-        $myObj->description = $row["skill"];
+        $myObj->skill = $row["skill"];
 
         array_push($rst, $myObj);
         // echo json_encode($myObj);
