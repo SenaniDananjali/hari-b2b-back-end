@@ -17,7 +17,7 @@ if($conn === false){
   die("ERROR: Could not connect. " . $conn->connect_error);
 }
 
-$details = "SELECT stylist.id as sty , skills.description as skill FrOM stylist, stylistSkillMapping, skills
+$details = "SELECT stylist.id as sty, stylist.description as des , skills.description as skill FrOM stylist, stylistSkillMapping, skills
     WHERE stylistSkillMapping.skill_id = skills.id && stylist.id = stylistSkillMapping.stylist_id";
 
 $result = $conn->query($details);
@@ -32,6 +32,7 @@ if ($result->num_rows > 0) {
         $myObj = new stdClass();
         $myObj->id =  $row["sty"];
         $myObj->skill = $row["skill"];
+        $myObj->des = $row["des"];
 
         array_push($rst, $myObj);
         // echo json_encode($myObj);
