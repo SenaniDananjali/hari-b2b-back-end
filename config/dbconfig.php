@@ -1,4 +1,5 @@
 <?php
+//---------data base configuration-----------
 class dbconfig{
   function connection(){
     $servername = "localhost";
