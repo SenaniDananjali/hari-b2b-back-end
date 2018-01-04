@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 02, 2018 at 10:27 AM
+-- Generation Time: Jan 04, 2018 at 08:38 AM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -44,7 +44,15 @@ INSERT INTO `busyDates` (`id`, `stylist_id`, `time_slot_id`, `type`, `date`) VAL
 (1, 1, 1, 'MARKED_AS_BUSY', '2018-01-10'),
 (2, 2, 2, 'MARKED_AS_BUSY', '2018-01-11'),
 (3, 1, 2, 'MARKED_AS_BUSY', '2018-01-10'),
-(4, 3, 2, 'MARKED_AS_BUSY', '2018-01-20');
+(4, 3, 2, 'MARKED_AS_BUSY', '2018-01-20'),
+(5, 2, 1, 'MARKED_AS_BUSY', '2018-01-04'),
+(6, 2, 2, 'MARKED_AS_BUSY', '2018-01-04'),
+(7, 3, 1, 'MARKED_AS_BUSY', '2018-01-05'),
+(8, 2, 2, 'MARKED_AS_BUSY', '2018-01-05'),
+(9, 3, 1, 'MARKED_AS_BUSY', '2018-01-03'),
+(10, 3, 2, 'MARKED_AS_BUSY', '2018-01-03'),
+(11, 4, 1, 'MARKED_AS_BUSY', '2018-01-04'),
+(12, 4, 2, 'MARKED_AS_BUSY', '2018-01-04');
 
 -- --------------------------------------------------------
 
@@ -67,6 +75,54 @@ INSERT INTO `gallery` (`id`, `profile_id`, `image_path`) VALUES
 (2, 2, '../gallery/2/profile/sty_prof.jpg'),
 (3, 3, '../gallery/3/profile/sty_prof.jpg'),
 (4, 4, '../gallery/4/profile/sty_prof.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `locations`
+--
+
+CREATE TABLE `locations` (
+  `id` int(10) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `locations`
+--
+
+INSERT INTO `locations` (`id`, `city`, `state`) VALUES
+(1, 'Sydney', ''),
+(2, 'Perth', ''),
+(3, 'Kingston', ''),
+(4, 'Melbourne', ''),
+(5, 'canberra', ''),
+(6, 'Newcastle', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `preferredLocations`
+--
+
+CREATE TABLE `preferredLocations` (
+  `stylist_id` int(10) NOT NULL,
+  `location_id` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `preferredLocations`
+--
+
+INSERT INTO `preferredLocations` (`stylist_id`, `location_id`) VALUES
+(1, 1),
+(1, 5),
+(2, 2),
+(2, 3),
+(3, 3),
+(4, 4),
+(4, 6);
 
 -- --------------------------------------------------------
 
@@ -113,7 +169,7 @@ CREATE TABLE `stylist` (
 
 INSERT INTO `stylist` (`id`, `job_role`, `first_name`, `last_name`, `description`) VALUES
 (1, 1, 'Emma', 'Olivia', 'We were all very young and were just doing what we loved.'),
-(2, 1, 'Sophia', 'Isabella', 'We were all very young and were just doing what we loved.'),
+(2, 1, 'Emma', 'Isabella', 'We were all very young and were just doing what we loved.'),
 (3, 1, 'Jacob', 'William', 'We were just working and doing what we loved '),
 (4, 2, 'James', 'Alexander', 'Famous for styling the tresses of Kate Moss, Sienna Miller and Emma Watson\r\n');
 
@@ -142,7 +198,8 @@ INSERT INTO `stylistSkillMapping` (`stylist_id`, `skill_id`) VALUES
 (4, 1),
 (4, 2),
 (4, 7),
-(4, 6);
+(4, 6),
+(2, 3);
 
 -- --------------------------------------------------------
 
@@ -161,7 +218,7 @@ CREATE TABLE `timeSlot` (
 
 INSERT INTO `timeSlot` (`id`, `slot`) VALUES
 (1, '8AM - 12PM'),
-(2, '1PM  - 5PM');
+(2, '1PM - 5PM');
 
 --
 -- Indexes for dumped tables
@@ -178,6 +235,18 @@ ALTER TABLE `busyDates`
 --
 ALTER TABLE `gallery`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `locations`
+--
+ALTER TABLE `locations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `preferredLocations`
+--
+ALTER TABLE `preferredLocations`
+  ADD PRIMARY KEY (`stylist_id`,`location_id`);
 
 --
 -- Indexes for table `skills`
@@ -205,13 +274,19 @@ ALTER TABLE `timeSlot`
 -- AUTO_INCREMENT for table `busyDates`
 --
 ALTER TABLE `busyDates`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `locations`
+--
+ALTER TABLE `locations`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `skills`
