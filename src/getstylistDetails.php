@@ -5,22 +5,14 @@
      * Time: 9:32 AM
      */
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "hairb2b";
+     include_once("../config/dbconfig.php");
+     $dbconfig = new dbconfig;
+     $con = ($dbconfig -> connection());
 
-    // Create connection
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    // Check connection
-
-    if($conn === false){
-      die("ERROR: Could not connect. " . $conn->connect_error);
-    }
 
     $details = "SELECT id,first_name, last_name, description FROM stylist";
 
-    $result = $conn->query($details);
+    $result = $con->query($details);
     header('Content-Type: application/json', true, 200);
     header('Access-Control-Allow-Origin: *',true,200);
     header('charset: utf-8',true,200);
@@ -46,5 +38,5 @@
         echo "0 results";
     }
 
-    $conn->close();
+    $con->close();
     ?>

@@ -3,23 +3,15 @@
  * User: senani
  * Date: 01/03/17
  */
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "hairb2b";
+ include_once("../config/dbconfig.php");
+ $dbconfig = new dbconfig;
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-
-if($conn === false){
-  die("ERROR: Could not connect. " . $conn->connect_error);
-}
+ $con = ($dbconfig -> connection());
 
 $details = "SELECT stylist.id as sty_id, locations.city  as loc FrOM stylist, preferredLocations, locations
 WHERE preferredLocations.stylist_id = stylist.id && preferredLocations.location_id = locations.id ";
 
-$result = $conn->query($details);
+$result = $con->query($details);
 header('Content-Type: application/json', true, 200);
 header('Access-Control-Allow-Origin: *',true,200);
 header('charset: utf-8',true,200);
@@ -39,5 +31,5 @@ if ($result->num_rows > 0) {
     echo "0 results";
 }
 
-$conn->close();
+$con->close();
 ?>
