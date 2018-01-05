@@ -178,36 +178,127 @@ function getStylistSkills(){
   $details = "SELECT stylist.id as sty, stylist.description as des , skills.description as skill FrOM stylist, stylistSkillMapping, skills
      WHERE stylistSkillMapping.skill_id = skills.id && stylist.id = stylistSkillMapping.stylist_id";
 
- $result = $con->query($details);
- $rst = array();
+   $result = $con->query($details);
+   $rst = array();
 
- if ($result->num_rows > 0) {
-     // output data of each row
-     while($row = $result->fetch_assoc()) {
-         $myObj = new stdClass();
-         $myObj->id =  $row["sty"];
-         $myObj->skill = $row["skill"];
-         $myObj->des = $row["des"];
+   if ($result->num_rows > 0) {
+       // output data of each row
+       while($row = $result->fetch_assoc()) {
+           $myObj = new stdClass();
+           $myObj->id =  $row["sty"];
+           $myObj->skill = $row["skill"];
+           $myObj->des = $row["des"];
 
-         array_push($rst, $myObj);
-         // echo json_encode($myObj);
-     }
-     // echo  implode(" ",$rst);
-     $myJSON = json_encode($rst);
+           array_push($rst, $myObj);
+           // echo json_encode($myObj);
+       }
+       // echo  implode(" ",$rst);
+       $myJSON = json_encode($rst);
 
-     echo $myJSON;
- } else {
-     echo "0 results";
- }
+       echo $myJSON;
+   } else {
+       echo "0 results";
+   }
 
- $con->close();
+   $con->close();
+}
+function getJobRole(){
+  //-------------connection set up-----------
+  $dbconfig = new dbconfig;
+  $con = ($dbconfig -> connection());
+  //-------------connection set up-----------
+
+  $details = "SELECT  stylist.id as sty ,jobRole.role as job from jobRole,stylist
+  WHERE jobRole.id =stylist.job_role";
+  $result = $con->query($details);
+
+  $rst = array();
+
+  if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+          $myObj = new stdClass();
+          $myObj->sty_id =  $row["sty"];
+          $myObj->job = $row["job"];
+          array_push($rst, $myObj);
+
+        }
+        // echo  implode(" ",$rst);
+        $myJSON = json_encode($rst);
+
+        echo $myJSON;
+    } else {
+        echo "0 results";
+    }
+
+  $con->close();
+}
+function job(){
+  //-------------connection set up-----------
+  $dbconfig = new dbconfig;
+  $con = ($dbconfig -> connection());
+  //-------------connection set up-----------
+
+  $details = "SELECT jobRole.role as job FROM jobRole";
+  $result = $con->query($details);
+
+  $rst = array();
+
+  if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+          $myObj = new stdClass();
+          $myObj->job = $row["job"];
+          array_push($rst, $myObj);
+
+        }
+        // echo  implode(" ",$rst);
+        $myJSON = json_encode($rst);
+
+        echo $myJSON;
+    } else {
+        echo "0 results";
+    }
+
+  $con->close();
+
+}
+function locationForSearch(){
+  //-------------connection set up-----------
+  $dbconfig = new dbconfig;
+  $con = ($dbconfig -> connection());
+  //-------------connection set up-----------
+
+  $details = "SELECT locations.city as city FROM locations";
+  $result = $con->query($details);
+
+  $rst = array();
+
+  if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+          $myObj = new stdClass();
+          $myObj->city = $row["city"];
+          array_push($rst, $myObj);
+
+        }
+        // echo  implode(" ",$rst);
+        $myJSON = json_encode($rst);
+
+        echo $myJSON;
+    } else {
+        echo "0 results";
+    }
+
+  $con->close();
 }
 
 //--------------call functions-----------------
-if(function_exists($_GET['f'])){
-  $_GET['f']();
+function call(){
+  if(function_exists($_GET['f'])){
+    $_GET['f']();
+  }
 }
+call();
 
-
-//getPorfile($con);
 ?>

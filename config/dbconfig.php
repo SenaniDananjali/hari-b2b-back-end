@@ -16,8 +16,5 @@ class dbconfig{
     }
       return $conn;
   }
-
-
-
 }
 ?>
