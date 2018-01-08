@@ -292,13 +292,47 @@ function locationForSearch(){
 
   $con->close();
 }
+function getFullDetails(){
+  //-------------connection set up-----------
+  $dbconfig = new dbconfig;
+  $con = ($dbconfig -> connection());
+  //-------------connection set up-----------
 
+  $details = "SELECT stylist.id as id, stylist.first_name as fname ,stylist.last_name as lname,jobRole.role as job,stylist.description as des,locations.city as loc ,skills.description as skill FROM stylist,locations,preferredLocations,skills,stylistSkillMapping,jobRole
+  WHERE stylist.id=preferredLocations.stylist_id && locations.id=preferredLocations.location_id &&skills.id =stylistSkillMapping.skill_id &&stylistSkillMapping.stylist_id=stylist.id && jobRole.id=stylist.job_role   ";
+
+  $result = $con->query($details);
+  $rst = array();
+
+  if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+          $myObj = new stdClass();
+          $myObj->sty_id =  $row["id"];
+          $myObj->first_name =  $row["fname"];
+          $myObj->last_name =  $row["lname"];
+          $myObj->job =  $row["job"];
+          $myObj->des =  $row["des"];
+          $myObj->loc =  $row["loc"];
+          $myObj->skill =  $row["skill"];
+          array_push($rst, $myObj);
+      }
+      $myJSON = json_encode($rst);
+      echo $myJSON;
+  } else {
+      echo "0 results";
+  }
+
+  $con->close();
+
+}
 //--------------call functions-----------------
 function call(){
   if(function_exists($_GET['f'])){
     $_GET['f']();
   }
 }
+
 call();
 
 ?>
