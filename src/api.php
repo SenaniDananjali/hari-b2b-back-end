@@ -309,7 +309,7 @@ function getFullDetails(){
       while($row = $result->fetch_assoc()) {
           $myObj = new stdClass();
           $myObj->sty_id =  $row["id"];
-          $myObj->first_name =  $row["fname"];
+          $myObj->f_name =  $row["fname"];
           $myObj->last_name =  $row["lname"];
           $myObj->job =  $row["job"];
           $myObj->des =  $row["des"];

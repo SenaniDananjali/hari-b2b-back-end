@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 04, 2018 at 08:38 AM
+-- Generation Time: Jan 09, 2018 at 12:23 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -44,15 +44,16 @@ INSERT INTO `busyDates` (`id`, `stylist_id`, `time_slot_id`, `type`, `date`) VAL
 (1, 1, 1, 'MARKED_AS_BUSY', '2018-01-10'),
 (2, 2, 2, 'MARKED_AS_BUSY', '2018-01-11'),
 (3, 1, 2, 'MARKED_AS_BUSY', '2018-01-10'),
-(4, 3, 2, 'MARKED_AS_BUSY', '2018-01-20'),
-(5, 2, 1, 'MARKED_AS_BUSY', '2018-01-04'),
-(6, 2, 2, 'MARKED_AS_BUSY', '2018-01-04'),
-(7, 3, 1, 'MARKED_AS_BUSY', '2018-01-05'),
-(8, 2, 2, 'MARKED_AS_BUSY', '2018-01-05'),
-(9, 3, 1, 'MARKED_AS_BUSY', '2018-01-03'),
-(10, 3, 2, 'MARKED_AS_BUSY', '2018-01-03'),
-(11, 4, 1, 'MARKED_AS_BUSY', '2018-01-04'),
-(12, 4, 2, 'MARKED_AS_BUSY', '2018-01-04');
+(4, 3, 2, 'MARKED_AS_BUSY', '2018-01-13'),
+(5, 2, 1, 'MARKED_AS_BUSY', '2018-01-17'),
+(6, 2, 2, 'MARKED_AS_BUSY', '2018-01-17'),
+(7, 3, 1, 'MARKED_AS_BUSY', '2018-01-12'),
+(8, 2, 1, 'MARKED_AS_BUSY', '2018-01-12'),
+(9, 3, 1, 'MARKED_AS_BUSY', '2018-01-14'),
+(10, 3, 2, 'MARKED_AS_BUSY', '2018-01-15'),
+(11, 4, 1, 'MARKED_AS_BUSY', '2018-01-11'),
+(12, 4, 2, 'MARKED_AS_BUSY', '2018-01-11'),
+(13, 1, 1, 'MARKED_AS_BUSY', '2018-01-11');
 
 -- --------------------------------------------------------
 
@@ -75,6 +76,25 @@ INSERT INTO `gallery` (`id`, `profile_id`, `image_path`) VALUES
 (2, 2, '../gallery/2/profile/sty_prof.jpg'),
 (3, 3, '../gallery/3/profile/sty_prof.jpg'),
 (4, 4, '../gallery/4/profile/sty_prof.jpg');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `jobRole`
+--
+
+CREATE TABLE `jobRole` (
+  `id` int(10) NOT NULL,
+  `role` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `jobRole`
+--
+
+INSERT INTO `jobRole` (`id`, `role`) VALUES
+(1, 'Hair Stylist'),
+(2, 'Educator');
 
 -- --------------------------------------------------------
 
@@ -237,6 +257,12 @@ ALTER TABLE `gallery`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `jobRole`
+--
+ALTER TABLE `jobRole`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `locations`
 --
 ALTER TABLE `locations`
@@ -274,13 +300,19 @@ ALTER TABLE `timeSlot`
 -- AUTO_INCREMENT for table `busyDates`
 --
 ALTER TABLE `busyDates`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `jobRole`
+--
+ALTER TABLE `jobRole`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `locations`
