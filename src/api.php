@@ -309,7 +309,7 @@ function getFullDetails(){
       while($row = $result->fetch_assoc()) {
           $myObj = new stdClass();
           $myObj->sty_id =  $row["id"];
-          $myObj->f_name =  $row["fname"];
+          $myObj->first_name =  $row["fname"];
           $myObj->last_name =  $row["lname"];
           $myObj->job =  $row["job"];
           $myObj->des =  $row["des"];
@@ -326,10 +326,54 @@ function getFullDetails(){
   $con->close();
 
 }
+function getCharges($id){
+
+$dbconfig = new dbconfig;
+$con = ($dbconfig -> connection());
+//-------------connection set up-----------
+
+$details = "SELECT stylist.id as sty_id, timeSlot.slot as slot, chargePerSlot.charge as charge , chargePerSlot.currency as currency
+FROM stylist, timeSlot,chargePerSlot
+WHERE stylist.id = chargePerSlot.stylist_id && chargePerSlot.time_slot_id=timeSlot.id";
+//-------------connection set up-----------;
+$result = $con->query($details);
+
+$rst = array();
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+      if($id==$row["sty_id"]){
+      $myObj = new stdClass();
+      $myObj->id = $row["sty_id"];
+      $myObj->slot =  $row["slot"];
+      $myObj->charge = $row["charge"];
+      $myObj->currency = $row["currency"];
+      array_push($rst, $myObj);
+    }
+
+    }
+      // echo  implode(" ",$rst);
+      $myJSON = json_encode($rst);
+      echo $myJSON;
+} else {
+    echo "0 results";
+}
+
+$con->close();
+}
+
 //--------------call functions-----------------
 function call(){
   if(function_exists($_GET['f'])){
+    if(isset($_GET['id'])){
+     $_GET['f']($_GET['id']) ;
+     // echo $_GET['id'];
+    }
+    else {
     $_GET['f']();
+    }
+
   }
 }
 
