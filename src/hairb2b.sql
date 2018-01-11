@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 09, 2018 at 12:23 PM
+-- Generation Time: Jan 11, 2018 at 12:49 PM
 -- Server version: 10.1.28-MariaDB
 -- PHP Version: 7.1.10
 
@@ -58,24 +58,53 @@ INSERT INTO `busyDates` (`id`, `stylist_id`, `time_slot_id`, `type`, `date`) VAL
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `chargePerSlot`
+--
+
+CREATE TABLE `chargePerSlot` (
+  `id` int(10) NOT NULL,
+  `stylist_id` int(10) NOT NULL,
+  `time_slot_id` int(10) NOT NULL,
+  `charge` float(5,2) NOT NULL,
+  `currency` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `chargePerSlot`
+--
+
+INSERT INTO `chargePerSlot` (`id`, `stylist_id`, `time_slot_id`, `charge`, `currency`) VALUES
+(1, 1, 1, 250.00, 'AUD'),
+(2, 1, 2, 300.00, 'AUD'),
+(3, 2, 1, 250.00, 'AUD'),
+(4, 2, 2, 300.00, 'AUD'),
+(5, 3, 1, 150.00, 'AUD'),
+(6, 3, 2, 150.00, 'AUD'),
+(7, 4, 1, 400.00, 'AUD'),
+(8, 4, 2, 450.00, 'AUD');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `gallery`
 --
 
 CREATE TABLE `gallery` (
   `id` int(10) NOT NULL,
   `profile_id` int(10) NOT NULL,
-  `image_path` varchar(200) NOT NULL
+  `image_path` varchar(200) NOT NULL,
+  `gallery_path` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `gallery`
 --
 
-INSERT INTO `gallery` (`id`, `profile_id`, `image_path`) VALUES
-(1, 1, '../gallery/1/profile/sty_prof.jpg'),
-(2, 2, '../gallery/2/profile/sty_prof.jpg'),
-(3, 3, '../gallery/3/profile/sty_prof.jpg'),
-(4, 4, '../gallery/4/profile/sty_prof.jpg');
+INSERT INTO `gallery` (`id`, `profile_id`, `image_path`, `gallery_path`) VALUES
+(1, 1, '../gallery/1/profile/sty_prof.jpg', '../gallery/1/profile/'),
+(2, 2, '../gallery/2/profile/sty_prof.jpg', '../gallery/2/profile/'),
+(3, 3, '../gallery/3/profile/sty_prof.jpg', '../gallery/3/profile/'),
+(4, 4, '../gallery/4/profile/sty_prof.jpg', '../gallery/4/profile/');
 
 -- --------------------------------------------------------
 
@@ -251,6 +280,12 @@ ALTER TABLE `busyDates`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `chargePerSlot`
+--
+ALTER TABLE `chargePerSlot`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `gallery`
 --
 ALTER TABLE `gallery`
@@ -301,6 +336,12 @@ ALTER TABLE `timeSlot`
 --
 ALTER TABLE `busyDates`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `chargePerSlot`
+--
+ALTER TABLE `chargePerSlot`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `gallery`
