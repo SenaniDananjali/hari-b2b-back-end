@@ -345,7 +345,7 @@ if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
       if($id==$row["sty_id"]){
       $myObj = new stdClass();
-      $myObj->id = $row["sty_id"];
+      $myObj->sty_id = $row["sty_id"];
       $myObj->slot =  $row["slot"];
       $myObj->charge = $row["charge"];
       $myObj->currency = $row["currency"];
