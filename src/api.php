@@ -292,31 +292,51 @@ function locationForSearch(){
 
   $con->close();
 }
-function getFullDetails(){
+function getFullDetails($id){
   //-------------connection set up-----------
   $dbconfig = new dbconfig;
   $con = ($dbconfig -> connection());
   //-------------connection set up-----------
 
-  $details = "SELECT stylist.id as id, stylist.first_name as fname ,stylist.last_name as lname,jobRole.role as job,stylist.description as des,locations.city as loc ,skills.description as skill FROM stylist,locations,preferredLocations,skills,stylistSkillMapping,jobRole
-  WHERE stylist.id=preferredLocations.stylist_id && locations.id=preferredLocations.location_id &&skills.id =stylistSkillMapping.skill_id &&stylistSkillMapping.stylist_id=stylist.id && jobRole.id=stylist.job_role   ";
+  $details = "SELECT stylist.id as id, stylist.first_name as fname ,stylist.last_name as lname,jobRole.role as job,stylist.description as des,locations.city as loc ,skills.description as skill, gallery.image_path as prof_pic
+  FROM stylist,locations,preferredLocations,skills,stylistSkillMapping,jobRole,gallery
+  WHERE stylist.id=preferredLocations.stylist_id=gallery.profile_id && locations.id=preferredLocations.location_id &&skills.id =stylistSkillMapping.skill_id &&stylistSkillMapping.stylist_id=stylist.id && jobRole.id=stylist.job_role ";
 
   $result = $con->query($details);
   $rst = array();
+  $skill = array();
+  $prefered_locations=array();
+  $gallery=array();
 
   if ($result->num_rows > 0) {
       // output data of each row
       while($row = $result->fetch_assoc()) {
+        if($id == $row["id"]){
           $myObj = new stdClass();
           $myObj->sty_id =  $row["id"];
           $myObj->first_name =  $row["fname"];
           $myObj->last_name =  $row["lname"];
           $myObj->job =  $row["job"];
           $myObj->des =  $row["des"];
-          $myObj->loc =  $row["loc"];
-          $myObj->skill =  $row["skill"];
-          array_push($rst, $myObj);
+          if(in_array($row["skill"],$skill)!=1){
+            array_push($skill,$row["skill"]);
+          }
+          if(in_array($row["loc"],$prefered_locations)!=1){
+            array_push($prefered_locations,$row["loc"]);
+          }
+          if(in_array($row["prof_pic"],$gallery)!=1){
+            $prof=file_get_contents($row["prof_pic"])
+            array_push($prefered_locations,$row["loc"]);
+          }
+
+          $myObj->loc =  $prefered_locations;
+          $myObj->skill =  $skill;
+          $myObj->gallery =  $gallery;
+
+
+        }
       }
+      array_push($rst, $myObj);
       $myJSON = json_encode($rst);
       echo $myJSON;
   } else {
