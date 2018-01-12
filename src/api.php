@@ -298,9 +298,9 @@ function getFullDetails($id){
   $con = ($dbconfig -> connection());
   //-------------connection set up-----------
 
-  $details = "SELECT stylist.id as id, stylist.first_name as fname ,stylist.last_name as lname,jobRole.role as job,stylist.description as des,locations.city as loc ,skills.description as skill, gallery.image_path as prof_pic
+  $details = "SELECT stylist.id as id, stylist.first_name as fname ,stylist.last_name as lname,jobRole.role as job,stylist.description as des,locations.city as loc ,skills.description as skill, gallery.image_path as prof_pic, gallery.gallery_path as gal_path
   FROM stylist,locations,preferredLocations,skills,stylistSkillMapping,jobRole,gallery
-  WHERE stylist.id=preferredLocations.stylist_id=gallery.profile_id && locations.id=preferredLocations.location_id &&skills.id =stylistSkillMapping.skill_id &&stylistSkillMapping.stylist_id=stylist.id && jobRole.id=stylist.job_role ";
+  WHERE stylist.id=preferredLocations.stylist_id && stylist.id=gallery.profile_id && locations.id=preferredLocations.location_id &&skills.id =stylistSkillMapping.skill_id &&stylistSkillMapping.stylist_id=stylist.id && jobRole.id=stylist.job_role ";
 
   $result = $con->query($details);
   $rst = array();
@@ -309,36 +309,49 @@ function getFullDetails($id){
   $gallery=array();
 
   if ($result->num_rows > 0) {
-      // output data of each row
-      while($row = $result->fetch_assoc()) {
-        if($id == $row["id"]){
-          $myObj = new stdClass();
-          $myObj->sty_id =  $row["id"];
-          $myObj->first_name =  $row["fname"];
-          $myObj->last_name =  $row["lname"];
-          $myObj->job =  $row["job"];
-          $myObj->des =  $row["des"];
-          if(in_array($row["skill"],$skill)!=1){
-            array_push($skill,$row["skill"]);
-          }
-          if(in_array($row["loc"],$prefered_locations)!=1){
-            array_push($prefered_locations,$row["loc"]);
-          }
-          if(in_array($row["prof_pic"],$gallery)!=1){
-            $prof=file_get_contents($row["prof_pic"])
-            array_push($prefered_locations,$row["loc"]);
-          }
-
-          $myObj->loc =  $prefered_locations;
-          $myObj->skill =  $skill;
-          $myObj->gallery =  $gallery;
-
-
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+      if($id == $row["id"]){
+        $myObj = new stdClass();
+        $myObj->sty_id =  $row["id"];
+        $myObj->first_name =  $row["fname"];// fname
+        $myObj->last_name =  $row["lname"];//lname
+        $myObj->job =  $row["job"];//job role
+        $myObj->des =  $row["des"];//description
+        //skills
+        if(in_array($row["skill"],$skill)!=1){
+          array_push($skill,$row["skill"]);
         }
+        //preffered locations
+        if(in_array($row["loc"],$prefered_locations)!=1){
+          array_push($prefered_locations,$row["loc"]);
+        }
+        //profile_pic
+        if(in_array( base64_encode(file_get_contents($row["gal_path"].$id.'/profile/sty_prof.jpg')),$gallery)!=1){
+          $imagedata=file_get_contents($row["gal_path"].$id.'/profile/sty_prof.jpg');
+          $base64 = base64_encode($imagedata);
+          array_push($gallery,$base64);
+        }
+        //gallery
+        for($i=1;$i<5;$i++){
+          if(in_array( base64_encode(file_get_contents($row["gal_path"].$id.'/'.$i.'.jpg')),$gallery)!=1){
+            $imagedata=file_get_contents($row["gal_path"].$id.'/'.$i.'.jpg');
+            $base64 = base64_encode($imagedata);
+            array_push($gallery,$base64);
+          }
+        }
+        //passsing array objects
+        $myObj->loc =  $prefered_locations;
+        $myObj->skill =  $skill;
+        $myObj->gallery =  $gallery;
+
+
       }
-      array_push($rst, $myObj);
-      $myJSON = json_encode($rst);
-      echo $myJSON;
+    }
+    array_push($rst, $myObj);
+    //json encoding
+    $myJSON = json_encode($rst);
+    echo $myJSON;
   } else {
       echo "0 results";
   }
@@ -348,39 +361,39 @@ function getFullDetails($id){
 }
 function getCharges($id){
 
-$dbconfig = new dbconfig;
-$con = ($dbconfig -> connection());
-//-------------connection set up-----------
+  $dbconfig = new dbconfig;
+  $con = ($dbconfig -> connection());
+  //-------------connection set up-----------
 
-$details = "SELECT stylist.id as sty_id, timeSlot.slot as slot, chargePerSlot.charge as charge , chargePerSlot.currency as currency
-FROM stylist, timeSlot,chargePerSlot
-WHERE stylist.id = chargePerSlot.stylist_id && chargePerSlot.time_slot_id=timeSlot.id";
-//-------------connection set up-----------;
-$result = $con->query($details);
+  $details = "SELECT stylist.id as sty_id, timeSlot.slot as slot, chargePerSlot.charge as charge , chargePerSlot.currency as currency
+  FROM stylist, timeSlot,chargePerSlot
+  WHERE stylist.id = chargePerSlot.stylist_id && chargePerSlot.time_slot_id=timeSlot.id";
+  //-------------connection set up-----------;
+  $result = $con->query($details);
 
-$rst = array();
+  $rst = array();
 
-if ($result->num_rows > 0) {
-    // output data of each row
-    while($row = $result->fetch_assoc()) {
-      if($id==$row["sty_id"]){
-      $myObj = new stdClass();
-      $myObj->sty_id = $row["sty_id"];
-      $myObj->slot =  $row["slot"];
-      $myObj->charge = $row["charge"];
-      $myObj->currency = $row["currency"];
-      array_push($rst, $myObj);
-    }
+  if ($result->num_rows > 0) {
+      // output data of each row
+      while($row = $result->fetch_assoc()) {
+        if($id==$row["sty_id"]){
+        $myObj = new stdClass();
+        $myObj->sty_id = $row["sty_id"];
+        $myObj->slot =  $row["slot"];
+        $myObj->charge = $row["charge"];
+        $myObj->currency = $row["currency"];
+        array_push($rst, $myObj);
+      }
 
-    }
-      // echo  implode(" ",$rst);
-      $myJSON = json_encode($rst);
-      echo $myJSON;
-} else {
-    echo "0 results";
-}
+      }
+        // echo  implode(" ",$rst);
+        $myJSON = json_encode($rst);
+        echo $myJSON;
+  } else {
+      echo "0 results";
+  }
 
-$con->close();
+  $con->close();
 }
 
 //--------------call functions-----------------
